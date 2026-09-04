@@ -1,0 +1,16 @@
+{% extends "quiz/base.html" %}
+
+{% block title %>Lista de Exámenes{% endblock %}
+
+{% block content %}
+    <h2>Exámenes</h2>
+    <ul>
+        {% for exam in object_list %}
+            <li>
+                <a href="{% url 'exam_detail' exam.pk %}">{{ exam.titulo }}</a>
+            </li>
+        {% empty %}
+            <li>No hay exámenes disponibles.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

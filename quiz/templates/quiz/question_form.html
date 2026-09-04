@@ -1,0 +1,20 @@
+{% extends "quiz/base.html" %}
+
+{% block title %}Crear Pregunta{% endblock %}
+
+{% block content %}
+    <h2>Crear Pregunta para: {{ examen.titulo }}</h2>
+    
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        
+        <h3>Opciones (una debe ser correcta)</h3>
+        {{ formset.management_form }}
+        {% for form in formset.forms %}
+            {{ form.as_p }}<br><br>
+        {% endfor %}
+        
+        <button type="submit">Guardar</button>
+    </form>
+{% endblock %}

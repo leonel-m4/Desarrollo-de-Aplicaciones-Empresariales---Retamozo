@@ -1,0 +1,31 @@
+JUSTIFICACIÓN DE TIPOS DE CAMPO POR MODELO
+
+MODELO: Exam
+1. titulo (CharField, max_length=200):
+   - Justificación: Se utiliza CharField porque el título es un dato de texto de longitud fija y conocida. Un máximo de 200 caracteres es suficiente para títulos de exámenes y cumple con la regla de PEP 8/ Django de usar cantidades razonables. Usar un tipo de campo distinto (como TextField) sería excesivo para un título corto.
+   
+2. descripcion (TextField, blank=True):
+   - Justificación: Se utiliza TextField porque la descripción es un campo de texto de longitud variable e indefinida, que puede contener párrafos extensos. A diferencia de CharField, TextField no impone una longitud máxima máxima estricta, lo que permite descripciones detalladas. El parámetro blank=True permite que el campo sea opcional.
+   
+3. fecha_creacion (DateTimeField, auto_now_add=True):
+   - Justificación: Se utiliza DateTimeField para almacenar la fecha y hora exactas de creación del registro. El parámetro auto_now_add=True establece automáticamente la fecha al momento de crear el objeto, lo que garantiza trazabilidad sin requerir código adicional. Es el tipo de campo adecuado para marcas de tiempo automáticas.
+
+MODELO: Question
+1. enunciado (CharField, max_length=500):
+   - Justificación: Se utiliza CharField porque el enunciado es un texto de longitud moderada y conocida (hasta 500 caracteres). Este tipo de campo es adecuado para preguntas de examen que no son extremadamente largas. El límite de caracteres ayuda a mantener la integridad de los datos.
+   
+2. puntaje (IntegerField, default=1):
+   - Justificación: Se utiliza IntegerField porque el puntaje es un valor numérico entero que representa la puntuación de la pregunta. Los puntajes de examen típicamente son números enteros (1, 2, 5, 10, etc.). Usar un campo numérico entero permite operaciones matemáticas y validación de rangos.
+   
+3. dificultad (CharField, choices, max_length=100, default='MEDIUM'):
+   - Justificación: Se utiliza CharField conchoices para restringir los valores posibles a un conjunto definido ('Fácil', 'Medium', 'Difícil'). Esto garantiza consistencia en los datos y facilita la filtrado y reporte. El parámetro default='MEDIUM' establece un valor por defecto razonable. Usar un CharField en lugar de un IntegerField permite descripciones más significativas.
+
+MODELO: Choice
+1. texto (CharField, max_length=300):
+   - Justificación: Se utiliza CharField porque el texto de la opción es un campo de texto de longitud conocida y limitada (hasta 300 caracteres). Las opciones de respuesta típicamente son cadenas de texto de longitud moderada. El límite de caracteres evita respuestas excesivamente largas.
+   
+2. es_correcta (BooleanField, default=False):
+   - Justificación: Se utiliza BooleanField porque representa un valor binusto: verdadero/falso, correcto/incorrecto. Este es el tipo de campo más adecuado para indicar si una opción es la respuesta correcta. El valor por defecto False asegura que, por defecto, ninguna opción esté marcada como correcta hasta que se especifique lo contrario.
+   
+3. pregunta (ForeignKey a Question, on_delete=CASCADE):
+   - Justificación: Se utiliza ForeignKey para establecer la relación Many-to-One entre Choice y Question, donde cada pregunta tiene múltiples opciones. On_delete=models.CASCADE asegura que si una pregunta se elimina, todas sus opciones también se eliminan, manteniendo la integridad referencial de la base de datos.

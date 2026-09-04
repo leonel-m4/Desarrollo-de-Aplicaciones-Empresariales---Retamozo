@@ -1,0 +1,24 @@
+{% extends "quiz/base.html" %}
+
+{% block title %}{{ exam.titulo }}{% endblock %}
+
+{% block content %}
+    <h2>{{ exam.titulo }}</h2>
+    <p>{{ exam.descripcion|default:"" }}</p>
+    
+    <h3>Preguntas</h3>
+    <ul>
+        {% for question in questions %}
+            <li>
+                <strong>{{ question.enunciado }}</strong> (Puntuación: {{ question.puntaje }})
+                <ul>
+                    {% for choice in question.choice_set.all %}
+                        <li>{{ choice.texto }} ({{ "Correcta" if choice.es_correcta else "Incorrecta" }})</li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% empty %}
+            <li>No hay preguntas en este examen.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
